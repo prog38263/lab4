@@ -19,6 +19,8 @@ def hello():
 @app.route('/simpleform', methods=['GET','POST'])
 def simple_form():
     sform = SimpleForm()
+    if redis.get("hits") is None:
+        redis.set("hits", 0)
     if sform.validate_on_submit():
         redis.incr("hits")
         flash(f"Hi {sform.username.data}")
